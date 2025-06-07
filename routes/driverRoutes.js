@@ -6,4 +6,9 @@ const { protect, isAdmin } = require('../middleware/authMiddleware');
 
 router.post('/', protect, isAdmin, createDriver);
 
+// Example routes
+router.get('/drivers', getAllDrivers);
+router.get('/drivers/:id', getDriverById);
+router.get('/drivers/email/:email', getDriverByEmail);
+
 module.exports = router;

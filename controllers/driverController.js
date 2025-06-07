@@ -16,3 +16,45 @@ exports.createDriver = async (req, res) => {
     res.status(500).json({ msg: 'Server error' });
   }
 };
+
+// Get all drivers
+exports.getAllDrivers = async (req, res) => {
+  try {
+    const drivers = await User.find({ role: 'driver' }).select('-password');
+    res.status(200).json({ drivers });
+  } catch (err) {
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
+
+// Get driver by ID
+exports.getDriverById = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const driver = await User.findOne({ _id: id, role: 'driver' }).select('-password');
+    
+    if (!driver) {
+      return res.status(404).json({ msg: 'Driver not found' });
+    }
+    
+    res.status(200).json({ driver });
+  } catch (err) {
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
+
+// Get driver by email
+exports.getDriverByEmail = async (req, res) => {
+  const { email } = req.params;
+  try {
+    const driver = await User.findOne({ email, role: 'driver' }).select('-password');
+    
+    if (!driver) {
+      return res.status(404).json({ msg: 'Driver not found' });
+    }
+    
+    res.status(200).json({ driver });
+  } catch (err) {
+    res.status(500).json({ msg: 'Server error' });
+  }
+};
