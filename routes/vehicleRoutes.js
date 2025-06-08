@@ -1,11 +1,13 @@
 // routes/vehicleRoutes.js
 const express = require('express');
 const router = express.Router();
-const { 
-  createVehicle, 
-  getAllVehicles, 
-  assignDriverToVehicle, 
-  updateVehicleStatus 
+const {
+  createVehicle,
+  getAllVehicles,
+  assignDriverToVehicle,
+  updateVehicleStatus,
+  updateVehicle,
+  getVehicleById
 } = require('../controllers/vehicleController');
 const { protect, isAdmin } = require('../middleware/authMiddleware');
 
@@ -14,12 +16,15 @@ router.post('/', protect, isAdmin, createVehicle);
 
 // Get all vehicles
 router.get('/', protect, getAllVehicles);
+router.get('/:id', protect, isAdmin, getVehicleById);
 
-// Assign driver to vehicle
+// Assign driver to vehicle (and unassign if driverId is null)
 router.put('/assign-driver', protect, isAdmin, assignDriverToVehicle);
 
-// Update vehicle status - Fixed route parameter
+// Update vehicle status
 router.put('/:id/status', protect, isAdmin, updateVehicleStatus);
 
-module.exports = router;
+// Update vehicle details
+router.put('/:id', protect, isAdmin, updateVehicle); // New route for updating vehicle details
 
+module.exports = router;
